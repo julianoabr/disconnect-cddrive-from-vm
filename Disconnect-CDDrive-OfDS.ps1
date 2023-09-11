@@ -43,16 +43,18 @@ foreach ($vmOnDS in $vmListOnDS)
 
         Start-Sleep -Seconds 10 -Verbose
 
-        $vQuestion = Get-VM -Name $vmOnDS  | Get-VMQuestion -QuestionText '*locked*'
+        $vQuestion = Get-VM -Name $vmOnDS  | Get-VMQuestion
+        
+        $vQuestionText = $vQuestion.Text 
 
-        if ($vQuestion){
+        if ($vQuestionText -like "*locked*"){
 
             Set-VMQuestion -VMQuestion $vQuestion -Option button.yes -Confirm:$false -Verbose
 
         }#end of IF Question
         else{
         
-            Write-Host "VM: $vmOnDS has not Linux locking the CD DRIVE" -ForegroundColor White -BackgroundColor DarkBlue
+            Write-Host "VM: $vmOnDS has not Linux locking the DVD/CD DRIVE" -ForegroundColor White -BackgroundColor DarkBlue
 
         }#end of Else Question
                 
@@ -66,5 +68,3 @@ foreach ($vmOnDS in $vmListOnDS)
 
 
 }#end of Foreach
-
-
